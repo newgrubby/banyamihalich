@@ -30,6 +30,7 @@ uniform float uMouseAmt;  // 0..1 — присутствие курсора
 uniform float uScroll;    // 0..1 — прогресс ухода первого экрана
 uniform float uGuard;     // насколько беречь колонку с заголовком
 uniform float uOpacity;   // общий множитель (плавный вход)
+uniform float uBurst;     // 0..1 — эффект кнопки «Поддать пару»
 
 vec3 hash33(vec3 p) {
   p = vec3(dot(p, vec3(127.1, 311.7, 74.7)),
@@ -115,8 +116,9 @@ void main() {
   float mi = exp(-dot(md, md) * 26.0) * uMouseAmt;
   uv += normalize(md + vec2(1e-4)) * mi * 0.04;
 
-  float fill = sin(clamp(uScroll, 0.0, 1.0) * 3.14159265) * 0.85;
-  float boost = 1.0 + 0.55 * smoothstep(0.0, 0.18, uScroll);
+  float scrollFill = sin(clamp(uScroll, 0.0, 1.0) * 3.14159265) * 0.85;
+  float fill = max(scrollFill, uBurst * 0.72);
+  float boost = 1.0 + 0.55 * smoothstep(0.0, 0.18, uScroll) + uBurst * 0.95;
 
   // В кадре уже есть настоящий пар, поэтому струи здесь — добавка,
   // которая живёт от курсора и прокрутки, а не второй столб дыма
@@ -146,7 +148,7 @@ void main() {
   vec3 col = mix(vec3(0.79, 0.755, 0.715), vec3(1.0, 0.72, 0.42), warmth * 0.5);
 
   // В покое слой почти незаметен, на переходе к следующему блоку — плотный
-  float a = clamp(total, 0.0, 1.0) * (0.30 + 0.42 * fill) * uOpacity;
+  float a = clamp(total, 0.0, 1.0) * (0.30 + 0.42 * fill) * uOpacity * (1.0 + uBurst * 0.55);
   gl_FragColor = vec4(col * a, a);
 }
 `;
@@ -259,6 +261,7 @@ export default function Steam({ sectionRef, sourceRef }: SteamProps) {
       scroll: gl.getUniformLocation(program, 'uScroll'),
       guard: gl.getUniformLocation(program, 'uGuard'),
       opacity: gl.getUniformLocation(program, 'uOpacity'),
+      burst: gl.getUniformLocation(program, 'uBurst'),
     };
 
     const reduced = prefersReducedMotion();
@@ -328,9 +331,9 @@ export default function Steam({ sectionRef, sourceRef }: SteamProps) {
     let raf = 0;
     let startTime = performance.now();
     let opacity = 0;
-    let burst = 0;
+    let burstStartedAt = Number.NEGATIVE_INFINITY;
     const onBurst = () => {
-      if (!reduced) burst = 1;
+      if (!reduced) burstStartedAt = performance.now();
     };
 
     const draw = (now: number) => {
@@ -345,7 +348,19 @@ export default function Steam({ sectionRef, sourceRef }: SteamProps) {
       mouse.y += (mouse.ty - mouse.y) * 0.06;
       mouse.amt += (mouse.tamt - mouse.amt) * 0.04;
       opacity += (1 - opacity) * 0.035;
-      burst *= 0.965;
+
+      // 0.25 с нарастания, 1 с плотного пара и 2.5 с мягкого рассеивания.
+      const burstElapsed = now - burstStartedAt;
+      let burst = 0;
+      if (burstElapsed >= 0 && burstElapsed < 250) {
+        const progress = burstElapsed / 250;
+        burst = progress * progress * (3 - 2 * progress);
+      } else if (burstElapsed >= 250 && burstElapsed < 1250) {
+        burst = 1;
+      } else if (burstElapsed >= 1250 && burstElapsed < 3750) {
+        const progress = 1 - (burstElapsed - 1250) / 2500;
+        burst = progress * progress * (3 - 2 * progress);
+      }
 
       const t = reduced ? 8 : (now - startTime) / 1000;
 
@@ -355,7 +370,8 @@ export default function Steam({ sectionRef, sourceRef }: SteamProps) {
       gl.uniform1f(u.mouseAmt, reduced ? 0 : mouse.amt);
       gl.uniform1f(u.scroll, reduced ? 0 : scroll);
       gl.uniform1f(u.guard, window.innerWidth > 900 ? 1 : 0.45);
-      gl.uniform1f(u.opacity, reduced ? 1 : opacity * (1 + burst * 1.75));
+      gl.uniform1f(u.opacity, reduced ? 1 : opacity);
+      gl.uniform1f(u.burst, reduced ? 0 : burst);
 
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
