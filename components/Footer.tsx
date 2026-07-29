@@ -61,7 +61,16 @@ export default function Footer() {
 
       <div className={`shell ${styles.bottom}`}>
         <p>{footer.copyright}</p>
-        <p className={styles.made}>Санитарный день — понедельник</p>
+        <div className={styles.bottomMeta}>
+          <p>Санитарный день — понедельник</p>
+          <span aria-hidden="true">·</span>
+          <p>
+            Сайт разработан командой{' '}
+            <a href="https://eolabs.ru" target="_blank" rel="noopener noreferrer">
+              EO Labs
+            </a>
+          </p>
+        </div>
       </div>
     </footer>
   );

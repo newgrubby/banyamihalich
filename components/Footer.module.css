@@ -119,8 +119,21 @@
   color: var(--c-dim);
 }
 
-.made {
+.bottomMeta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
   opacity: 0.8;
+}
+
+.bottomMeta a {
+  color: var(--c-bronze-2);
+  transition: color 0.3s var(--ease);
+}
+
+.bottomMeta a:hover {
+  color: var(--c-cream);
 }
 
 @media (max-width: 860px) {
@@ -140,5 +153,9 @@
 
   .brandCol {
     grid-column: span 1;
+  }
+
+  .bottomMeta {
+    justify-content: flex-start;
   }
 }
