@@ -68,6 +68,25 @@
   margin-top: clamp(26px, 4vh, 40px);
 }
 
+.steamButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-inline: 10px;
+  color: var(--c-bronze-2);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  opacity: 0.78;
+  transition: color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+.steamButton:hover,
+.steamButton:focus-visible {
+  color: var(--c-cream);
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
 .status {
   display: flex;
   align-items: center;

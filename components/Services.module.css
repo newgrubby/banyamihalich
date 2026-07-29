@@ -42,8 +42,22 @@
 }
 
 .card:hover .image {
-  transform: scale(1.045);
+  transform: scale(1.075);
   filter: saturate(1.04) brightness(1.06);
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(112deg, transparent 30%, rgba(238, 179, 116, 0.1), transparent 64%);
+  transform: translateX(-120%);
+  transition: transform 0.85s var(--ease);
+}
+
+.card:hover::after {
+  transform: translateX(120%);
 }
 
 .mediaFade {

@@ -328,6 +328,10 @@ export default function Steam({ sectionRef, sourceRef }: SteamProps) {
     let raf = 0;
     let startTime = performance.now();
     let opacity = 0;
+    let burst = 0;
+    const onBurst = () => {
+      if (!reduced) burst = 1;
+    };
 
     const draw = (now: number) => {
       raf = requestAnimationFrame(draw);
@@ -341,6 +345,7 @@ export default function Steam({ sectionRef, sourceRef }: SteamProps) {
       mouse.y += (mouse.ty - mouse.y) * 0.06;
       mouse.amt += (mouse.tamt - mouse.amt) * 0.04;
       opacity += (1 - opacity) * 0.035;
+      burst *= 0.965;
 
       const t = reduced ? 8 : (now - startTime) / 1000;
 
@@ -350,7 +355,7 @@ export default function Steam({ sectionRef, sourceRef }: SteamProps) {
       gl.uniform1f(u.mouseAmt, reduced ? 0 : mouse.amt);
       gl.uniform1f(u.scroll, reduced ? 0 : scroll);
       gl.uniform1f(u.guard, window.innerWidth > 900 ? 1 : 0.45);
-      gl.uniform1f(u.opacity, reduced ? 1 : opacity);
+      gl.uniform1f(u.opacity, reduced ? 1 : opacity * (1 + burst * 1.75));
 
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
@@ -371,6 +376,7 @@ export default function Steam({ sectionRef, sourceRef }: SteamProps) {
 
     window.addEventListener('resize', onResize, { passive: true });
     window.addEventListener('pointermove', onPointer, { passive: true });
+    window.addEventListener('banya-steam-burst', onBurst);
     section.addEventListener('pointerleave', onLeave);
     canvas.addEventListener('webglcontextlost', onContextLost);
 
@@ -382,6 +388,7 @@ export default function Steam({ sectionRef, sourceRef }: SteamProps) {
       observer.disconnect();
       window.removeEventListener('resize', onResize);
       window.removeEventListener('pointermove', onPointer);
+      window.removeEventListener('banya-steam-burst', onBurst);
       section.removeEventListener('pointerleave', onLeave);
       canvas.removeEventListener('webglcontextlost', onContextLost);
       gl.deleteProgram(program);

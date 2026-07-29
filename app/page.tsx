@@ -1,4 +1,5 @@
 import About from '@/components/About';
+import BanyaCursor from '@/components/BanyaCursor';
 import Contacts from '@/components/Contacts';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
@@ -14,6 +15,7 @@ import SmoothScroll from '@/components/SmoothScroll';
 export default function HomePage() {
   return (
     <>
+      <BanyaCursor />
       <SmoothScroll />
       <Reveal />
 

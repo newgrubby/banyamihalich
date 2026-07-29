@@ -17,6 +17,9 @@ export default function Hero() {
   const sourceRef = useRef<HTMLSpanElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
   const now = useBanyaDay();
+  const addSteam = () => {
+    window.dispatchEvent(new CustomEvent('banya-steam-burst'));
+  };
 
   useEffect(() => {
     if (prefersReducedMotion()) return;
@@ -90,6 +93,10 @@ export default function Hero() {
               <PhoneIcon />
               {cta.call}
             </a>
+            <button type="button" className={styles.steamButton} onClick={addSteam}>
+              <span aria-hidden="true">♨</span>
+              Поддать пару
+            </button>
           </div>
 
           <p className={styles.status} aria-live="polite">
