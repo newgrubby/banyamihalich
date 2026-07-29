@@ -1,14 +1,16 @@
 /**
  * Подготовка медиа первого экрана из исходников public/hero.mp4 и public/hero.png.
  *
- *   public/hero-loop.mp4   — бесшовная петля (прямой проход + обратный)
+ *   public/hero-loop.mp4   — бесшовная плавная петля (прямой проход + обратный)
  *   public/hero-poster.avif — постер для быстрого LCP
  *   public/hero-poster.webp — то же в WebP
  *
  * Исходный ролик — медленный наезд камеры: его последний кадр сильно
  * отличается от первого, поэтому обычный loop даёт рывок каждые пять секунд.
  * Склеиваем прямой проход с обратным, отбрасывая дублирующиеся кадры
- * на стыках, — петля замыкается кадр в кадр.
+ * на стыках, — петля замыкается кадр в кадр. После склейки добавляем
+ * промежуточные кадры с компенсацией движения: разворот камеры и пар
+ * воспринимаются мягче, а итоговая частота составляет 48 кадров в секунду.
  *
  * Нужен ffmpeg в PATH. Запуск: npm run media
  */
@@ -66,7 +68,8 @@ ffmpeg([
   '-filter_complex',
   `[0:v]split=2[fwd][tmp];` +
     `[tmp]reverse,trim=start_frame=1:end_frame=${reverseEnd},setpts=PTS-STARTPTS[rev];` +
-    `[fwd][rev]concat=n=2:v=1:a=0[out]`,
+    `[fwd][rev]concat=n=2:v=1:a=0[loop];` +
+    `[loop]minterpolate=fps=48:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1[out]`,
   '-map', '[out]',
   '-an',
   '-c:v', 'libx264',
