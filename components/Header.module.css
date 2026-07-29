@@ -135,11 +135,6 @@
   color: var(--c-bronze-2);
 }
 
-.phoneManager {
-  font-size: 11.5px;
-  color: var(--c-dim);
-}
-
 .call {
   display: grid;
   place-items: center;
@@ -207,11 +202,6 @@
   margin-top: 26px;
   font-size: 21px;
   color: var(--c-bronze-2);
-}
-
-.menuManager {
-  font-size: 13px;
-  color: var(--c-dim);
 }
 
 /* --- адаптив --- */

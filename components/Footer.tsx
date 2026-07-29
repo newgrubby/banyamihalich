@@ -51,7 +51,6 @@ export default function Footer() {
           <a className={styles.phone} href={contacts.phoneHref}>
             {contacts.phone}
           </a>
-          <p className={styles.manager}>{contacts.manager}</p>
           <address className={styles.address}>{contacts.addressFull}</address>
           <a className={styles.vk} href={contacts.vk} target="_blank" rel="noopener noreferrer">
             <VkIcon />

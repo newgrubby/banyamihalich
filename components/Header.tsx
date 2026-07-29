@@ -93,10 +93,9 @@ export default function Header() {
           <a
             className={styles.phone}
             href={contacts.phoneHref}
-            aria-label={`Позвонить: ${contacts.phone}, ${contacts.manager}`}
+            aria-label={`Позвонить: ${contacts.phone}`}
           >
             <span className={styles.phoneNumber}>{contacts.phone}</span>
-            <span className={styles.phoneManager}>{contacts.manager}</span>
           </a>
 
           <a className={styles.call} href={contacts.phoneHref} aria-label={`Позвонить: ${contacts.phone}`}>
@@ -130,7 +129,6 @@ export default function Header() {
           <PhoneIcon />
           {contacts.phone}
         </a>
-        <p className={styles.menuManager}>{contacts.manager}</p>
       </div>
     </header>
   );

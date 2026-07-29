@@ -86,12 +86,6 @@
   color: var(--c-bronze-2);
 }
 
-.manager {
-  font-size: 13px;
-  color: var(--c-dim);
-  margin-top: 2px;
-}
-
 .address {
   margin-top: 14px;
   font-size: 14.5px;

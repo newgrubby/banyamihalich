@@ -29,7 +29,6 @@ export default function Contacts() {
                   <a className={styles.phone} href={contacts.phoneHref}>
                     {contacts.phone}
                   </a>
-                  <p className={styles.sub}>{contacts.manager}</p>
                 </div>
               </li>
 
