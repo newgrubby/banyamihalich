@@ -1,0 +1,263 @@
+.header {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 50;
+  height: var(--header-h);
+  transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease), backdrop-filter 0.4s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+
+.solid {
+  background: rgba(11, 9, 7, 0.86);
+  border-bottom-color: var(--c-line-soft);
+  backdrop-filter: blur(10px);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 100%;
+}
+
+/* --- логотип --- */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: none;
+}
+
+.mark {
+  color: var(--c-bronze);
+  width: 38px;
+  height: 38px;
+  transition: color 0.3s var(--ease);
+}
+
+.brand:hover .mark {
+  color: var(--c-bronze-2);
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.brandName {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-cream);
+}
+
+.brandTag {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--c-dim);
+}
+
+/* --- навигация --- */
+
+.nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navList {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.2vw, 34px);
+}
+
+.navLink,
+.navLinkActive {
+  position: relative;
+  display: inline-block;
+  padding: 6px 2px;
+  font-size: 14.5px;
+  color: var(--c-dim);
+  transition: color 0.3s var(--ease);
+}
+
+.navLink::after,
+.navLinkActive::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--c-bronze);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s var(--ease);
+}
+
+.navLink:hover,
+.navLinkActive {
+  color: var(--c-cream);
+}
+
+.navLink:hover::after,
+.navLinkActive::after {
+  transform: scaleX(1);
+}
+
+/* --- правая часть --- */
+
+.side {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: none;
+}
+
+.phone {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.25;
+}
+
+.phoneNumber {
+  font-size: 16px;
+  color: var(--c-cream);
+  letter-spacing: 0.02em;
+  transition: color 0.3s var(--ease);
+}
+
+.phone:hover .phoneNumber {
+  color: var(--c-bronze-2);
+}
+
+.phoneManager {
+  font-size: 11.5px;
+  color: var(--c-dim);
+}
+
+.call {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(184, 118, 58, 0.5);
+  border-radius: var(--radius);
+  color: var(--c-bronze-2);
+  transition: background-color 0.3s var(--ease), border-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+.call:hover {
+  background: rgba(184, 118, 58, 0.14);
+  border-color: var(--c-bronze-2);
+  color: var(--c-cream);
+}
+
+.burger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  color: var(--c-cream);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+}
+
+/* --- мобильное меню --- */
+
+.menu {
+  position: fixed;
+  inset: var(--header-h) 0 0;
+  background: rgba(9, 7, 6, 0.97);
+  backdrop-filter: blur(14px);
+  padding: 32px var(--gutter) 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+}
+
+.menuOpen {
+  opacity: 1;
+}
+
+.menuList {
+  display: flex;
+  flex-direction: column;
+}
+
+.menuList a {
+  display: block;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--c-line-soft);
+  font-family: var(--font-serif);
+  font-size: 24px;
+  color: var(--c-cream);
+}
+
+.menuPhone {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 26px;
+  font-size: 21px;
+  color: var(--c-bronze-2);
+}
+
+.menuManager {
+  font-size: 13px;
+  color: var(--c-dim);
+}
+
+/* --- адаптив --- */
+
+@media (max-width: 1180px) {
+  .navList {
+    gap: 18px;
+  }
+
+  .navLink,
+  .navLinkActive {
+    font-size: 13.5px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .nav {
+    display: none;
+  }
+
+  .burger {
+    display: grid;
+  }
+
+  .inner {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 620px) {
+  .phone {
+    display: none;
+  }
+
+  .brandName {
+    font-size: 16px;
+  }
+
+  .mark {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .menu {
+    display: none;
+  }
+}

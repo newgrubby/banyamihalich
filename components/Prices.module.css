@@ -1,0 +1,142 @@
+.layout {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: clamp(18px, 3vw, 42px);
+  align-items: stretch;
+  margin-top: clamp(34px, 5vw, 54px);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: clamp(24px, 2.6vw, 36px);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(184, 118, 58, 0.13), transparent 60%),
+    linear-gradient(180deg, rgba(31, 22, 17, 0.85), rgba(13, 10, 8, 0.9));
+  transition: border-color 0.4s var(--ease), transform 0.4s var(--ease);
+}
+
+.card:hover {
+  border-color: rgba(184, 118, 58, 0.5);
+  transform: translateY(-3px);
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  color: var(--c-bronze);
+  margin-bottom: 6px;
+}
+
+.cardTitle {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--c-dim);
+}
+
+.amount {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-serif);
+  line-height: 1;
+}
+
+.number {
+  font-size: clamp(44px, 5vw, 62px);
+  color: var(--c-cream);
+}
+
+.currency {
+  font-size: clamp(24px, 2.6vw, 32px);
+  color: var(--c-bronze-2);
+}
+
+.cardNote {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--c-dim);
+  margin-top: 4px;
+}
+
+/* --- правая колонка --- */
+
+.aside {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 2.6vw, 38px);
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(22, 16, 13, 0.7), rgba(10, 8, 6, 0.85));
+}
+
+.claim {
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 1.7vw, 23px);
+  line-height: 1.4;
+  color: var(--c-cream);
+}
+
+.extras {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid var(--c-line-soft);
+  font-size: 14.5px;
+  color: var(--c-dim);
+}
+
+.extras li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.bullet {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  margin-top: 8px;
+  background: var(--c-bronze);
+  transform: rotate(45deg);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 28px;
+}
+
+.actions > * {
+  flex: 1 1 180px;
+}
+
+/* --- адаптив --- */
+
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}

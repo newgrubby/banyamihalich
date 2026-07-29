@@ -1,0 +1,16 @@
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+  /* расчёт идёт в пониженном разрешении — лёгкое размытие снимает ступеньки */
+  filter: blur(0.6px);
+  will-change: transform;
+}
+
+.soft {
+  filter: blur(14px);
+  opacity: 0.85;
+}

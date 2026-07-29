@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 640" width="600" height="640" role="img" aria-label="Кружка холодного пива и закуски на столе в предбаннике">
+  <defs>
+    <linearGradient id="room" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#1d1410"/>
+      <stop offset="55%" stop-color="#120c09"/>
+      <stop offset="100%" stop-color="#080605"/>
+    </linearGradient>
+
+    <radialGradient id="warm" cx="0.7" cy="0.14" r="0.7">
+      <stop offset="0%" stop-color="#e6a055" stop-opacity="0.42"/>
+      <stop offset="55%" stop-color="#894c1e" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="table" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0%" stop-color="#7d4f28"/>
+      <stop offset="42%" stop-color="#52321a"/>
+      <stop offset="100%" stop-color="#22150c"/>
+    </linearGradient>
+
+    <linearGradient id="beerBody" x1="0" y1="0" x2="1" y2="0.2">
+      <stop offset="0%" stop-color="#5e2f08"/>
+      <stop offset="18%" stop-color="#c9761a"/>
+      <stop offset="42%" stop-color="#f0a92f"/>
+      <stop offset="66%" stop-color="#d4831c"/>
+      <stop offset="100%" stop-color="#4d2606"/>
+    </linearGradient>
+
+    <linearGradient id="foam" x1="0" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#fdf6e6"/>
+      <stop offset="52%" stop-color="#e8d9bd"/>
+      <stop offset="100%" stop-color="#b6a487"/>
+    </linearGradient>
+
+    <linearGradient id="glassSheen" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.30"/>
+      <stop offset="16%" stop-color="#fff" stop-opacity="0.05"/>
+      <stop offset="72%" stop-color="#fff" stop-opacity="0.02"/>
+      <stop offset="92%" stop-color="#fff" stop-opacity="0.24"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0.04"/>
+    </linearGradient>
+
+    <linearGradient id="vign" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.55"/>
+      <stop offset="32%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.82"/>
+    </linearGradient>
+
+    <filter id="grain" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.008 0.15" numOctaves="4" seed="17"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer>
+    </filter>
+
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="12"/>
+    </filter>
+
+    <filter id="foamBubbles" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.28" numOctaves="3" seed="11"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.6"/></feComponentTransfer>
+    </filter>
+
+    <clipPath id="mugClip">
+      <path d="M196 246 h150 l-14 264 a24 24 0 0 1 -24 22 h-74 a24 24 0 0 1 -24 -22 Z"/>
+    </clipPath>
+  </defs>
+
+  <rect width="600" height="640" fill="url(#room)"/>
+
+  <!-- стена из бруса -->
+  <g opacity="0.45" stroke="#301f14" stroke-width="2.5">
+    <path d="M0 84h600M0 168h600M0 252h600M0 336h600M0 420h600"/>
+  </g>
+  <rect width="600" height="470" filter="url(#grain)" opacity="0.16" style="mix-blend-mode:overlay"/>
+  <rect width="600" height="640" fill="url(#warm)"/>
+
+  <!-- стол -->
+  <g>
+    <path d="M0 470 h600 v40 h-600Z" fill="url(#table)"/>
+    <path d="M0 510 h600 v130 h-600Z" fill="#100a07"/>
+    <rect y="470" width="600" height="40" filter="url(#grain)" opacity="0.26" style="mix-blend-mode:overlay"/>
+    <path d="M0 472h600" stroke="#cf9550" stroke-width="2" opacity="0.35"/>
+    <g stroke="#0b0704" stroke-width="2" opacity="0.6">
+      <path d="M0 490h600"/>
+    </g>
+  </g>
+
+  <!-- тёплое пятно на столе -->
+  <ellipse cx="290" cy="500" rx="200" ry="24" fill="#e29a4c" opacity="0.16" filter="url(#soft)"/>
+  <ellipse cx="272" cy="524" rx="118" ry="20" fill="#050403" opacity="0.75"/>
+
+  <!-- кружка -->
+  <g>
+    <!-- ручка -->
+    <path d="M346 300 q76 6 76 74 q0 68 -78 76" fill="none" stroke="#2a1a0e" stroke-width="34" stroke-linecap="round"/>
+    <path d="M346 300 q70 8 70 74 q0 64 -72 72" fill="none" stroke="#d8b184" stroke-width="20" stroke-linecap="round" opacity="0.30"/>
+
+    <!-- корпус -->
+    <path d="M196 246 h150 l-14 264 a24 24 0 0 1 -24 22 h-74 a24 24 0 0 1 -24 -22 Z" fill="#1b120b"/>
+    <g clip-path="url(#mugClip)">
+      <rect x="180" y="240" width="180" height="300" fill="url(#beerBody)"/>
+      <!-- грани стекла -->
+      <g stroke="#2b1607" stroke-width="2" opacity="0.35">
+        <path d="M224 240 v300M262 240 v300M300 240 v300"/>
+      </g>
+      <g stroke="#ffd88a" stroke-width="2" opacity="0.28">
+        <path d="M232 240 v300M270 240 v300M308 240 v300"/>
+      </g>
+      <!-- пузырьки -->
+      <g fill="#ffe9b5" opacity="0.55">
+        <circle cx="216" cy="420" r="3"/><circle cx="238" cy="380" r="2.4"/><circle cx="256" cy="440" r="2.8"/>
+        <circle cx="284" cy="392" r="2.2"/><circle cx="300" cy="446" r="3.2"/><circle cx="228" cy="330" r="2.4"/>
+        <circle cx="272" cy="336" r="2"/><circle cx="310" cy="356" r="2.6"/><circle cx="204" cy="470" r="2.4"/>
+      </g>
+      <rect x="180" y="240" width="180" height="300" fill="url(#glassSheen)"/>
+      <!-- пена сверху -->
+      <path d="M180 240 h180 v54 c-30 12 -60 -10 -92 2 c-30 12 -58 -6 -88 4 Z" fill="url(#foam)"/>
+      <path d="M180 240 h180 v54 c-30 12 -60 -10 -92 2 c-30 12 -58 -6 -88 4 Z" filter="url(#foamBubbles)" opacity="0.35" style="mix-blend-mode:overlay"/>
+    </g>
+
+    <!-- шапка пены над краем -->
+    <g>
+      <path d="M194 250 c4 -34 30 -50 58 -44 c14 -22 48 -24 62 -2 c26 -2 40 20 32 46 Z" fill="url(#foam)"/>
+      <path d="M194 250 c4 -34 30 -50 58 -44 c14 -22 48 -24 62 -2 c26 -2 40 20 32 46 Z" filter="url(#foamBubbles)" opacity="0.4" style="mix-blend-mode:overlay"/>
+      <path d="M212 246 q18 -20 42 -14" fill="none" stroke="#fffaf0" stroke-width="3" opacity="0.6"/>
+      <!-- стекающая капля пены -->
+      <path d="M198 252 q-8 26 -2 40 q10 -12 8 -40Z" fill="#f2e6cd" opacity="0.85"/>
+    </g>
+
+    <!-- обод кружки -->
+    <ellipse cx="271" cy="248" rx="76" ry="14" fill="none" stroke="#e6d3b1" stroke-width="3" opacity="0.45"/>
+    <path d="M196 246 h150 l-14 264 a24 24 0 0 1 -24 22 h-74 a24 24 0 0 1 -24 -22 Z" fill="none" stroke="#120b06" stroke-width="3"/>
+    <path d="M202 260 l-8 244" stroke="#fff1d2" stroke-width="4" opacity="0.22"/>
+    <path d="M338 262 l-6 240" stroke="#fff1d2" stroke-width="3" opacity="0.16"/>
+  </g>
+
+  <!-- миска с орехами -->
+  <g transform="translate(452 452)">
+    <ellipse cx="0" cy="8" rx="92" ry="26" fill="#050403" opacity="0.6"/>
+    <path d="M-84 -8 a84 34 0 0 0 168 0 Z" fill="#3d2716" stroke="#1a1008" stroke-width="2"/>
+    <ellipse cx="0" cy="-8" rx="84" ry="26" fill="#251710" stroke="#6b4522" stroke-width="2"/>
+    <g fill="#7d5a2e" stroke="#2a1a0d" stroke-width="1.4">
+      <ellipse cx="-44" cy="-12" rx="16" ry="12"/><ellipse cx="-14" cy="-16" rx="17" ry="13"/>
+      <ellipse cx="18" cy="-12" rx="16" ry="12"/><ellipse cx="46" cy="-16" rx="15" ry="11"/>
+      <ellipse cx="-28" cy="-2" rx="16" ry="11"/><ellipse cx="4" cy="0" rx="17" ry="12"/>
+      <ellipse cx="34" cy="-2" rx="15" ry="11"/>
+    </g>
+    <g fill="#a87c42" opacity="0.6">
+      <ellipse cx="-46" cy="-16" rx="8" ry="5"/><ellipse cx="-16" cy="-20" rx="9" ry="5"/>
+      <ellipse cx="16" cy="-16" rx="8" ry="5"/><ellipse cx="2" cy="-4" rx="8" ry="4"/>
+    </g>
+  </g>
+
+  <!-- вобла / сушки на доске -->
+  <g transform="translate(120 486)">
+    <path d="M-70 0 h140 v14 h-140Z" fill="#4a2f18" stroke="#190f07" stroke-width="2"/>
+    <g fill="#8a6a3a" stroke="#2a1a0d" stroke-width="1.5">
+      <ellipse cx="-32" cy="-10" rx="34" ry="10" transform="rotate(-6 -32 -10)"/>
+      <ellipse cx="16" cy="-12" rx="32" ry="9" transform="rotate(4 16 -12)"/>
+    </g>
+    <g fill="#b08c4e" opacity="0.5">
+      <ellipse cx="-36" cy="-13" rx="16" ry="4"/>
+      <ellipse cx="12" cy="-15" rx="15" ry="3.5"/>
+    </g>
+  </g>
+
+  <rect width="600" height="640" fill="url(#vign)"/>
+</svg>

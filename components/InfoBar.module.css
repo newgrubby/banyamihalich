@@ -1,0 +1,131 @@
+.wrap {
+  position: relative;
+  z-index: 8;
+  margin-top: -46px;
+}
+
+.panel {
+  display: grid;
+  grid-template-columns: 1.25fr 0.9fr 0.9fr 1.1fr 1.1fr;
+  gap: 0;
+  padding: 26px 8px;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(180deg, rgba(38, 27, 21, 0.94), rgba(20, 15, 12, 0.96));
+  box-shadow:
+    inset 0 1px 0 rgba(214, 160, 100, 0.1),
+    0 30px 60px -40px rgba(0, 0, 0, 0.95);
+}
+
+.cell {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 4px 20px;
+  border-left: 1px solid var(--c-line-soft);
+}
+
+.cell:first-child {
+  border-left: none;
+}
+
+.icon {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  color: var(--c-bronze);
+  margin-top: 2px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.label {
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-dim);
+}
+
+.value {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--c-cream);
+}
+
+.valueSmall {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--c-cream);
+}
+
+.currency {
+  color: var(--c-bronze-2);
+}
+
+.note {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--c-dim);
+}
+
+/* --- адаптив --- */
+
+@media (max-width: 1180px) {
+  .panel {
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 26px;
+  }
+
+  .cell:nth-child(3n + 1) {
+    border-left: none;
+  }
+
+  .today {
+    grid-column: span 3;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--c-line-soft);
+  }
+}
+
+@media (max-width: 760px) {
+  .wrap {
+    margin-top: -24px;
+  }
+
+  .panel {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 22px 4px;
+  }
+
+  .cell {
+    padding: 4px 14px;
+  }
+
+  .cell:nth-child(odd) {
+    border-left: none;
+  }
+
+  .today {
+    grid-column: span 2;
+  }
+
+  .value {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 420px) {
+  .note {
+    font-size: 12px;
+  }
+}

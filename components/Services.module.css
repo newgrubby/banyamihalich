@@ -1,0 +1,138 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-top: clamp(34px, 5vw, 54px);
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(28, 20, 16, 0.6), rgba(13, 10, 8, 0.9));
+  overflow: hidden;
+  transition:
+    border-color 0.45s var(--ease),
+    transform 0.45s var(--ease),
+    box-shadow 0.45s var(--ease);
+}
+
+.card:hover {
+  border-color: rgba(184, 118, 58, 0.45);
+  transform: translateY(-4px);
+  box-shadow: 0 30px 55px -38px rgba(226, 136, 74, 0.75);
+}
+
+.media {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 15 / 16;
+  overflow: hidden;
+  background: #0c0907;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s var(--ease), filter 0.45s var(--ease);
+  filter: saturate(0.94) brightness(0.96);
+}
+
+.card:hover .image {
+  transform: scale(1.045);
+  filter: saturate(1.04) brightness(1.06);
+}
+
+.mediaFade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 45%, rgba(13, 10, 8, 0.92) 100%);
+}
+
+.body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 0 18px 24px;
+  margin-top: -34px;
+  text-align: center;
+}
+
+.icon {
+  color: var(--c-bronze);
+  opacity: 0.9;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(17px, 1.4vw, 21px);
+  line-height: 1.25;
+  color: var(--c-cream);
+}
+
+.text {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--c-dim);
+  max-width: 30ch;
+}
+
+/* --- адаптив --- */
+
+@media (max-width: 1180px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .card:nth-child(4),
+  .card:nth-child(5) {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 860px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+@media (max-width: 520px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .media {
+    flex: 0 0 40%;
+    aspect-ratio: auto;
+  }
+
+  .mediaFade {
+    background: linear-gradient(90deg, transparent 40%, rgba(13, 10, 8, 0.92) 100%);
+  }
+
+  .body {
+    flex: 1;
+    align-items: flex-start;
+    text-align: left;
+    margin-top: 0;
+    padding: 20px 18px;
+    justify-content: center;
+  }
+
+  .text {
+    max-width: none;
+  }
+}

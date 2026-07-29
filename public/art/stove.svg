@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 640" width="600" height="640" role="img" aria-label="Дровяная печь-каменка с открытой топкой и живым огнём">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#1a120e"/>
+      <stop offset="60%" stop-color="#100b09"/>
+      <stop offset="100%" stop-color="#080605"/>
+    </linearGradient>
+
+    <pattern id="brick" width="96" height="44" patternUnits="userSpaceOnUse">
+      <rect width="96" height="44" fill="#3a2a20"/>
+      <rect x="1" y="1" width="94" height="20" fill="#4a3527"/>
+      <rect x="1" y="23" width="45" height="20" fill="#453023"/>
+      <rect x="50" y="23" width="45" height="20" fill="#4e3829"/>
+    </pattern>
+
+    <linearGradient id="stoneShade" x1="0" y1="0" x2="1" y2="0.6">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.82"/>
+      <stop offset="42%" stop-color="#000" stop-opacity="0.30"/>
+      <stop offset="72%" stop-color="#c07a38" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.78"/>
+    </linearGradient>
+
+    <radialGradient id="fireCore" cx="0.5" cy="0.85" r="0.75">
+      <stop offset="0%" stop-color="#ffe6a8"/>
+      <stop offset="26%" stop-color="#ffb648"/>
+      <stop offset="58%" stop-color="#e2701d"/>
+      <stop offset="100%" stop-color="#7a2c07" stop-opacity="0.15"/>
+    </radialGradient>
+
+    <radialGradient id="fireHalo" cx="0.5" cy="0.6" r="0.5">
+      <stop offset="0%" stop-color="#ff9c3c" stop-opacity="0.62"/>
+      <stop offset="55%" stop-color="#c25c17" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="fireboxDark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#160c06"/>
+      <stop offset="70%" stop-color="#2a1206"/>
+      <stop offset="100%" stop-color="#48200a"/>
+    </linearGradient>
+
+    <linearGradient id="floorG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#241811"/>
+      <stop offset="100%" stop-color="#0b0806"/>
+    </linearGradient>
+
+    <linearGradient id="vign" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.6"/>
+      <stop offset="34%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.8"/>
+    </linearGradient>
+
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <filter id="soft2" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+    <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="5"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer>
+    </filter>
+
+    <clipPath id="fireboxClip">
+      <path d="M186 500 V366 a114 114 0 0 1 228 0 V500 Z"/>
+    </clipPath>
+  </defs>
+
+  <rect width="600" height="640" fill="url(#bg)"/>
+
+  <!-- дальняя стена -->
+  <g opacity="0.5">
+    <rect x="0" y="0" width="600" height="470" fill="url(#brick)" opacity="0.28"/>
+  </g>
+
+  <!-- пол -->
+  <rect y="540" width="600" height="100" fill="url(#floorG)"/>
+  <g stroke="#0a0705" stroke-width="2" opacity="0.7">
+    <path d="M-40 560 L-130 640"/><path d="M140 560 L90 640"/><path d="M320 560 L310 640"/>
+    <path d="M500 560 L530 640"/><path d="M640 560 L740 640"/>
+  </g>
+
+  <!-- тело печи -->
+  <g>
+    <rect x="66" y="96" width="468" height="452" fill="url(#brick)"/>
+    <rect x="66" y="96" width="468" height="452" fill="url(#stoneShade)"/>
+    <g clip-path="url(#fireboxClip)"><rect x="66" y="96" width="468" height="452" fill="none"/></g>
+    <rect x="66" y="96" width="468" height="452" filter="url(#rough)" opacity="0.16" style="mix-blend-mode:overlay"/>
+
+    <!-- карниз -->
+    <rect x="52" y="78" width="496" height="26" fill="#4b3527"/>
+    <rect x="52" y="78" width="496" height="7" fill="#6d4c2e" opacity="0.7"/>
+    <rect x="52" y="98" width="496" height="6" fill="#160e09" opacity="0.8"/>
+  </g>
+
+  <!-- каменка: камни в верхней нише -->
+  <g>
+    <rect x="196" y="140" width="208" height="96" rx="3" fill="#150d08"/>
+    <g fill="#3d3630" stroke="#181209" stroke-width="1.5">
+      <ellipse cx="234" cy="206" rx="30" ry="21"/>
+      <ellipse cx="296" cy="212" rx="34" ry="22"/>
+      <ellipse cx="356" cy="204" rx="28" ry="20"/>
+      <ellipse cx="264" cy="176" rx="30" ry="20"/>
+      <ellipse cx="330" cy="172" rx="27" ry="19"/>
+    </g>
+    <g fill="#6a6058" opacity="0.55">
+      <ellipse cx="228" cy="199" rx="16" ry="8"/>
+      <ellipse cx="292" cy="204" rx="18" ry="8"/>
+      <ellipse cx="352" cy="197" rx="14" ry="7"/>
+      <ellipse cx="259" cy="169" rx="15" ry="7"/>
+    </g>
+    <rect x="196" y="140" width="208" height="96" rx="3" fill="none" stroke="#5d4029" stroke-width="3"/>
+  </g>
+
+  <!-- топка -->
+  <g>
+    <path d="M186 500 V366 a114 114 0 0 1 228 0 V500 Z" fill="url(#fireboxDark)"/>
+    <g clip-path="url(#fireboxClip)">
+      <ellipse cx="300" cy="486" rx="150" ry="90" fill="url(#fireCore)" opacity="0.95"/>
+
+      <!-- поленья -->
+      <g stroke="#1b100a" stroke-width="3">
+        <rect x="206" y="452" width="190" height="26" rx="13" fill="#4a2c15" transform="rotate(-7 300 465)"/>
+        <rect x="222" y="474" width="170" height="24" rx="12" fill="#3d2411" transform="rotate(5 300 486)"/>
+        <rect x="238" y="430" width="140" height="22" rx="11" fill="#563318" transform="rotate(12 300 441)"/>
+      </g>
+
+      <!-- пламя -->
+      <g>
+        <path d="M300 500 c-30-26-38-58-24-84 4 16 12 24 20 28 -8-28 4-56 26-72 -6 26 4 42 18 56 12 12 18 28 14 44 -6 24-26 36-54 28Z" fill="url(#fireCore)" opacity="0.95"/>
+        <path d="M266 500 c-20-18-24-42-14-60 2 12 8 18 14 20 -6-20 4-38 18-50 -4 18 2 30 12 40 8 8 12 20 10 30Z" fill="#ffc25c" opacity="0.7"/>
+        <path d="M342 500 c-16-14-20-34-12-50 2 10 6 15 12 17 -5-17 3-32 15-42 -3 15 2 25 10 33 7 7 10 17 8 25Z" fill="#ffb14a" opacity="0.6"/>
+        <path d="M300 496 c-12-12-14-26-8-38 2 8 6 12 9 13 -4-13 3-24 11-30 -2 11 2 19 8 24 5 5 7 12 6 18Z" fill="#ffe9b0" opacity="0.85"/>
+      </g>
+
+      <!-- угли -->
+      <g fill="#ff8a2e" opacity="0.8">
+        <circle cx="248" cy="496" r="4"/><circle cx="286" cy="502" r="3"/>
+        <circle cx="330" cy="494" r="4.5"/><circle cx="362" cy="500" r="3"/>
+      </g>
+    </g>
+
+    <!-- рамка топки -->
+    <path d="M186 500 V366 a114 114 0 0 1 228 0 V500" fill="none" stroke="#171009" stroke-width="14"/>
+    <path d="M186 500 V366 a114 114 0 0 1 228 0 V500" fill="none" stroke="#8a6134" stroke-width="2.5" opacity="0.75"/>
+
+    <!-- петли дверцы -->
+    <g fill="#2a1c11" stroke="#7c5730" stroke-width="1.6">
+      <rect x="168" y="392" width="18" height="34" rx="2"/>
+      <rect x="414" y="392" width="18" height="34" rx="2"/>
+    </g>
+  </g>
+
+  <!-- зарево -->
+  <ellipse cx="300" cy="470" rx="250" ry="180" fill="url(#fireHalo)" filter="url(#soft)"/>
+  <ellipse cx="300" cy="570" rx="210" ry="42" fill="#c96a22" opacity="0.24" filter="url(#soft2)"/>
+
+  <!-- зола и дрова у печи -->
+  <g stroke="#100a06" stroke-width="2">
+    <rect x="20" y="516" width="120" height="18" rx="9" fill="#3a2313" transform="rotate(-4 80 525)"/>
+    <rect x="34" y="534" width="104" height="16" rx="8" fill="#2e1b0f" transform="rotate(3 86 542)"/>
+  </g>
+
+  <rect width="600" height="640" fill="url(#vign)"/>
+</svg>

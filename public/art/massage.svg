@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 640" width="600" height="640" role="img" aria-label="Свёрнутые полотенца и масла для массажа на деревянной лавке">
+  <defs>
+    <linearGradient id="room" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#1c1410"/>
+      <stop offset="55%" stop-color="#110c09"/>
+      <stop offset="100%" stop-color="#080605"/>
+    </linearGradient>
+
+    <radialGradient id="warm" cx="0.22" cy="0.16" r="0.72">
+      <stop offset="0%" stop-color="#e09a51" stop-opacity="0.4"/>
+      <stop offset="55%" stop-color="#83491d" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="bench" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#7a4d27"/>
+      <stop offset="45%" stop-color="#573418"/>
+      <stop offset="100%" stop-color="#2a1a0e"/>
+    </linearGradient>
+
+    <linearGradient id="towel" x1="0" y1="0" x2="0.75" y2="1">
+      <stop offset="0%" stop-color="#e0c49a"/>
+      <stop offset="42%" stop-color="#b2906a"/>
+      <stop offset="78%" stop-color="#71563c"/>
+      <stop offset="100%" stop-color="#3a2b1e"/>
+    </linearGradient>
+
+    <linearGradient id="towelDark" x1="0" y1="0" x2="0.75" y2="1">
+      <stop offset="0%" stop-color="#bd9c73"/>
+      <stop offset="45%" stop-color="#8a6c4b"/>
+      <stop offset="100%" stop-color="#2c2118"/>
+    </linearGradient>
+
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="0.4">
+      <stop offset="0%" stop-color="#2a1a10"/>
+      <stop offset="28%" stop-color="#8a5a2c"/>
+      <stop offset="55%" stop-color="#c08a4e"/>
+      <stop offset="100%" stop-color="#1e120a"/>
+    </linearGradient>
+
+    <linearGradient id="vign" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#000" stop-opacity="0.55"/>
+      <stop offset="32%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.82"/>
+    </linearGradient>
+
+    <filter id="grain" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.009 0.16" numOctaves="4" seed="21"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer>
+    </filter>
+
+    <filter id="terry" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="3" seed="6"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.45"/></feComponentTransfer>
+    </filter>
+
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
+
+  <rect width="600" height="640" fill="url(#room)"/>
+
+  <!-- стена -->
+  <g opacity="0.4" stroke="#2e1f14" stroke-width="2">
+    <path d="M0 90h600M0 180h600M0 270h600M0 360h600"/>
+  </g>
+  <rect width="600" height="420" filter="url(#grain)" opacity="0.16" style="mix-blend-mode:overlay"/>
+  <rect width="600" height="640" fill="url(#warm)"/>
+
+  <!-- лавка -->
+  <g>
+    <path d="M0 404 h600 v34 h-600Z" fill="url(#bench)"/>
+    <path d="M0 438 h600 v18 h-600Z" fill="#20130a"/>
+    <path d="M0 456 h600 v184 h-600Z" fill="#0e0a07"/>
+    <g stroke="#160d07" stroke-width="2" opacity="0.7">
+      <path d="M0 418h600"/>
+    </g>
+    <rect y="404" width="600" height="34" filter="url(#grain)" opacity="0.24" style="mix-blend-mode:overlay"/>
+    <path d="M0 406h600" stroke="#c88f4f" stroke-width="2" opacity="0.35"/>
+  </g>
+
+  <!-- отражение на лавке -->
+  <ellipse cx="300" cy="418" rx="230" ry="16" fill="#d79a54" opacity="0.12" filter="url(#soft)"/>
+
+  <!-- полотенца, свёрнутые в рулоны -->
+  <g>
+    <!-- задний ряд -->
+    <g transform="translate(196 296)">
+      <rect x="-88" y="-52" width="176" height="104" rx="52" fill="url(#towelDark)" stroke="#1d1812" stroke-width="2"/>
+      <rect x="-88" y="-52" width="176" height="104" rx="52" filter="url(#terry)" opacity="0.28" style="mix-blend-mode:overlay"/>
+      <ellipse cx="-88" cy="0" rx="26" ry="52" fill="#9d8058" stroke="#1d1812" stroke-width="2"/>
+      <path d="M-88 -30 a20 30 0 0 0 0 60" fill="none" stroke="#5d4f3f" stroke-width="3"/>
+      <path d="M-88 -14 a10 14 0 0 0 0 28" fill="none" stroke="#4a3e31" stroke-width="3"/>
+    </g>
+
+    <g transform="translate(374 300)">
+      <rect x="-84" y="-50" width="168" height="100" rx="50" fill="url(#towel)" stroke="#1d1812" stroke-width="2"/>
+      <rect x="-84" y="-50" width="168" height="100" rx="50" filter="url(#terry)" opacity="0.26" style="mix-blend-mode:overlay"/>
+      <ellipse cx="84" cy="0" rx="24" ry="50" fill="#c8a87c" stroke="#1d1812" stroke-width="2"/>
+      <path d="M84 -28 a18 28 0 0 1 0 56" fill="none" stroke="#7a6a55" stroke-width="3"/>
+      <path d="M84 -13 a9 13 0 0 1 0 26" fill="none" stroke="#5f5243" stroke-width="3"/>
+    </g>
+
+    <!-- передний рулон -->
+    <g transform="translate(290 372)">
+      <rect x="-104" y="-34" width="208" height="68" rx="34" fill="url(#towel)" stroke="#171310" stroke-width="2.5"/>
+      <rect x="-104" y="-34" width="208" height="68" rx="34" filter="url(#terry)" opacity="0.3" style="mix-blend-mode:overlay"/>
+      <ellipse cx="-104" cy="0" rx="20" ry="34" fill="#d8b384" stroke="#171310" stroke-width="2.5"/>
+      <path d="M-104 -20 a14 20 0 0 0 0 40" fill="none" stroke="#8b7a63" stroke-width="3"/>
+      <path d="M-104 -9 a7 9 0 0 0 0 18" fill="none" stroke="#6b5c49" stroke-width="3"/>
+      <path d="M104 -34 a34 34 0 0 1 0 68" fill="#7c6b57" opacity="0.8"/>
+      <!-- бронзовая лента -->
+      <path d="M6 -34 v68" stroke="#b8763a" stroke-width="7" opacity="0.85"/>
+      <path d="M6 -34 v68" stroke="#e2a468" stroke-width="2" opacity="0.6"/>
+    </g>
+  </g>
+
+  <!-- флаконы с маслом -->
+  <g>
+    <g transform="translate(474 348)">
+      <path d="M-16 0 h32 v52 a10 10 0 0 1 -10 10 h-12 a10 10 0 0 1 -10 -10 Z" fill="url(#glass)" stroke="#140c07" stroke-width="2"/>
+      <rect x="-8" y="-18" width="16" height="20" fill="#3a2413" stroke="#7d5024" stroke-width="1.6"/>
+      <rect x="-11" y="-26" width="22" height="10" rx="2" fill="#6b4522" stroke="#a3733c" stroke-width="1.4"/>
+      <rect x="-11" y="18" width="22" height="22" fill="#241a12" opacity="0.55"/>
+      <path d="M-9 8 v40" stroke="#e0b478" stroke-width="2.4" opacity="0.5"/>
+    </g>
+
+    <g transform="translate(520 366) scale(0.82)">
+      <path d="M-15 0 h30 v46 a10 10 0 0 1 -10 10 h-10 a10 10 0 0 1 -10 -10 Z" fill="url(#glass)" stroke="#140c07" stroke-width="2"/>
+      <rect x="-7" y="-16" width="14" height="18" fill="#3a2413" stroke="#7d5024" stroke-width="1.6"/>
+      <rect x="-10" y="-24" width="20" height="9" rx="2" fill="#6b4522" stroke="#a3733c" stroke-width="1.4"/>
+      <path d="M-8 8 v34" stroke="#e0b478" stroke-width="2.2" opacity="0.45"/>
+    </g>
+  </g>
+
+  <!-- сухие травы у полотенец -->
+  <g stroke="#6b6a38" stroke-width="2.4" fill="none" opacity="0.7" stroke-linecap="round">
+    <path d="M110 396 q-18 -30 -10 -58"/>
+    <path d="M118 396 q-4 -34 8 -56"/>
+    <path d="M104 396 q-26 -24 -26 -50"/>
+  </g>
+  <g fill="#7d7a3f" opacity="0.6">
+    <ellipse cx="99" cy="336" rx="7" ry="12" transform="rotate(-16 99 336)"/>
+    <ellipse cx="127" cy="340" rx="6" ry="11" transform="rotate(14 127 340)"/>
+    <ellipse cx="77" cy="346" rx="6" ry="11" transform="rotate(-30 77 346)"/>
+  </g>
+
+  <rect width="600" height="640" fill="url(#vign)"/>
+</svg>

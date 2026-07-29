@@ -1,0 +1,138 @@
+.section {
+  position: relative;
+  overflow: hidden;
+  border-block: 1px solid var(--c-line-soft);
+  background:
+    linear-gradient(180deg, rgba(20, 14, 11, 0.5), rgba(10, 8, 6, 0.86));
+}
+
+/* тёплое зарево снизу, как от каменки за стеной */
+.embers {
+  position: absolute;
+  inset: auto 0 -40% 0;
+  height: 90%;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 100% at 22% 100%, rgba(196, 106, 42, 0.22), transparent 68%),
+    radial-gradient(50% 100% at 82% 100%, rgba(150, 74, 30, 0.16), transparent 70%);
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+}
+
+.head {
+  max-width: 940px;
+}
+
+.eyebrow {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--c-bronze);
+  margin-bottom: 20px;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(34px, 5.6vw, 78px);
+  line-height: 1.03;
+  color: var(--c-cream);
+}
+
+.titleStrike {
+  display: block;
+  position: relative;
+  width: max-content;
+  max-width: 100%;
+  color: var(--c-dim);
+  font-style: italic;
+}
+
+/* «Не SPA.» — перечёркнуто бронзовой чертой */
+.titleStrike::after {
+  content: '';
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  top: 54%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--c-bronze) 12%, var(--c-bronze) 88%, transparent);
+  transform: rotate(-1.4deg);
+}
+
+.titleMain {
+  display: block;
+  margin-top: 0.08em;
+}
+
+.lead {
+  max-width: 62ch;
+  margin-top: clamp(24px, 3vw, 34px);
+  font-size: clamp(15.5px, 1.25vw, 18px);
+  line-height: 1.7;
+  color: var(--c-text);
+}
+
+.points {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin-top: clamp(44px, 6vw, 72px);
+  background: var(--c-line-soft);
+  border: 1px solid var(--c-line-soft);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.point {
+  padding: clamp(24px, 3vw, 38px);
+  background: rgba(13, 10, 8, 0.82);
+  transition: background-color 0.4s var(--ease);
+}
+
+.point:hover {
+  background: rgba(30, 21, 16, 0.88);
+}
+
+.pointIndex {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 13px;
+  letter-spacing: 0.24em;
+  color: var(--c-bronze);
+  margin-bottom: 16px;
+}
+
+.pointTitle {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(19px, 1.7vw, 24px);
+  line-height: 1.25;
+  color: var(--c-cream);
+  margin-bottom: 10px;
+}
+
+.pointText {
+  font-size: 14.5px;
+  line-height: 1.62;
+  color: var(--c-dim);
+}
+
+.quote {
+  margin-top: clamp(36px, 5vw, 58px);
+  text-align: center;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(20px, 2.4vw, 32px);
+  color: var(--c-bronze-2);
+}
+
+@media (max-width: 860px) {
+  .points {
+    grid-template-columns: 1fr;
+  }
+}

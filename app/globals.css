@@ -1,0 +1,364 @@
+/* ------------------------------------------------------------------ */
+/* Токены                                                              */
+/* ------------------------------------------------------------------ */
+
+:root {
+  /* Уголь и тёмное дерево */
+  --c-void: #080605;
+  --c-bg: #0e0b09;
+  --c-bg-2: #131010 ;
+  --c-panel: #191412;
+  --c-panel-2: #1f1815;
+  --c-wood: #2a1d15;
+  --c-wood-2: #3a2718;
+
+  /* Бронза и медь */
+  --c-bronze: #b8763a;
+  --c-bronze-2: #c98f4e;
+  --c-copper: #8f4f26;
+  --c-ember: #e2884a;
+
+  /* Текст */
+  --c-cream: #f0e2c9;
+  --c-text: #cdbca6;
+  --c-muted: #96837079;
+  --c-dim: #9b8876;
+  --c-line: #3a2c22;
+  --c-line-soft: #2a201a;
+
+  --font-serif: var(--font-playfair), 'Times New Roman', serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --header-h: 76px;
+  --shell: 1320px;
+  --gutter: 28px;
+  --radius: 3px;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (max-width: 900px) {
+  :root {
+    --header-h: 64px;
+    --gutter: 18px;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Сброс                                                               */
+/* ------------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: auto;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Тёплая подложка всего документа: угольный фон с медным подсветом */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 78% 8%, rgba(184, 118, 58, 0.14), transparent 62%),
+    radial-gradient(90% 60% at 8% 92%, rgba(143, 79, 38, 0.1), transparent 60%),
+    linear-gradient(180deg, #0f0c0a 0%, #0b0908 45%, #0e0a08 100%);
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+address {
+  font-style: normal;
+}
+
+::selection {
+  background: rgba(184, 118, 58, 0.35);
+  color: var(--c-cream);
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-bronze-2);
+  outline-offset: 3px;
+}
+
+/* Скроллбар */
+@supports selector(::-webkit-scrollbar) {
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0b0907;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2e231b;
+    border: 2px solid #0b0907;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #4a3524;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Утилиты сетки и типографики                                         */
+/* ------------------------------------------------------------------ */
+
+.shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  position: relative;
+  padding-block: clamp(64px, 8vw, 116px);
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
+
+.serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+
+.sectionTitle {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(26px, 3.4vw, 42px);
+  line-height: 1.12;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-cream);
+  text-align: center;
+}
+
+.sectionEyebrow {
+  display: block;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--c-bronze);
+  margin-bottom: 14px;
+}
+
+/* Бронзовый разделитель-ромб, как в референсе */
+.ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 18px auto 0;
+  width: min(220px, 60%);
+  color: var(--c-bronze);
+  opacity: 0.75;
+}
+
+.ornament::before,
+.ornament::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Тонкая зернистость поверх всего — «фактура», а не фильтр */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ------------------------------------------------------------------ */
+/* Кнопки                                                              */
+/* ------------------------------------------------------------------ */
+
+.btn {
+  --btn-bg: transparent;
+  --btn-border: rgba(184, 118, 58, 0.55);
+  --btn-color: var(--c-cream);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 26px;
+  border: 1px solid var(--btn-border);
+  border-radius: var(--radius);
+  background: var(--btn-bg);
+  color: var(--btn-color);
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    border-color 0.35s var(--ease),
+    color 0.35s var(--ease),
+    transform 0.35s var(--ease),
+    box-shadow 0.35s var(--ease);
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 15%, rgba(226, 136, 74, 0.22), transparent 85%);
+  transform: translateX(-120%);
+  transition: transform 0.65s var(--ease);
+  pointer-events: none;
+}
+
+.btn:hover::after,
+.btn:focus-visible::after {
+  transform: translateX(120%);
+}
+
+.btn:hover,
+.btn:focus-visible {
+  border-color: var(--c-bronze-2);
+  box-shadow: 0 8px 30px -14px rgba(226, 136, 74, 0.7);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn--primary {
+  --btn-bg: linear-gradient(168deg, #8a4f27 0%, #6d3c1d 55%, #5a3018 100%);
+  --btn-border: rgba(226, 136, 74, 0.5);
+  --btn-color: #fbeedc;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 210, 160, 0.22),
+    0 14px 34px -22px rgba(226, 136, 74, 0.9);
+}
+
+.btn--ghost {
+  --btn-bg: rgba(24, 18, 15, 0.55);
+}
+
+.btn--wide {
+  width: 100%;
+}
+
+.btn svg {
+  flex: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Появление блоков (стартовое состояние; финал доводит GSAP)          */
+/* ------------------------------------------------------------------ */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  will-change: transform, opacity;
+}
+
+.no-js [data-reveal],
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Отступ под мобильную панель действий */
+@media (max-width: 860px) {
+  body {
+    padding-bottom: 68px;
+  }
+}

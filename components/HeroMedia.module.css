@@ -1,0 +1,122 @@
+.scene {
+  position: absolute;
+  inset: 0 0 0 30%;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  background: #0b0806;
+}
+
+.still,
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /*
+    Ушат занимает 53–94% ширины кадра (замерено по профилю яркости).
+    Контейнер уже кадра, поэтому смещаем окно вправо: так ушат виден
+    целиком и стоит правее центра — как в референсе.
+  */
+  object-position: 95% 50%;
+}
+
+.video {
+  opacity: 0;
+  transition: opacity 0.9s var(--ease);
+}
+
+.videoReady {
+  opacity: 1;
+}
+
+/*
+  Невидимый маркер кромки ушата для шейдера пара: шейдерная струя должна
+  подниматься оттуда же, откуда идёт настоящий пар в кадре.
+*/
+.source {
+  position: absolute;
+  left: 43%;
+  top: 44%;
+  width: 2px;
+  height: 2px;
+}
+
+.ember {
+  position: absolute;
+  inset: 0;
+  opacity: 0.42;
+  background: radial-gradient(
+    46% 60% at 92% 30%,
+    rgba(226, 136, 74, 0.5),
+    rgba(150, 74, 30, 0.16) 45%,
+    transparent 72%
+  );
+  mix-blend-mode: screen;
+}
+
+/* Слева кадр уходит в фон страницы — под заголовок */
+.leftFade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    var(--c-bg) 0%,
+    rgba(14, 11, 9, 0.92) 14%,
+    rgba(14, 11, 9, 0.45) 32%,
+    transparent 58%
+  );
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(8, 6, 5, 0.7) 0%, transparent 26%, transparent 62%, rgba(11, 8, 6, 0.9) 100%),
+    radial-gradient(120% 100% at 50% 50%, transparent 42%, rgba(6, 4, 3, 0.6) 100%);
+}
+
+/* --- адаптив --- */
+
+@media (max-width: 1240px) {
+  .scene {
+    inset: 0 0 0 20%;
+  }
+
+  .still,
+  .video {
+    object-position: 93% 50%;
+  }
+}
+
+@media (max-width: 900px) {
+  .scene {
+    inset: 32% 0 0 0;
+  }
+
+  /* Узкий экран: ушат целиком не помещается, кадрируем по его центру */
+  .still,
+  .video {
+    object-position: 84% 50%;
+  }
+
+  .source {
+    left: 30%;
+    top: 28%;
+  }
+
+  .leftFade {
+    background: linear-gradient(
+      180deg,
+      var(--c-bg) 0%,
+      rgba(14, 11, 9, 0.86) 8%,
+      rgba(14, 11, 9, 0.3) 24%,
+      transparent 46%
+    );
+  }
+
+  .ember {
+    opacity: 0.3;
+  }
+}
