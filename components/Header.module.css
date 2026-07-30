@@ -174,11 +174,19 @@
   flex-direction: column;
   gap: 8px;
   opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   transition: opacity 0.3s var(--ease);
+}
+
+.menu[hidden] {
+  display: none;
 }
 
 .menuOpen {
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .menuList {

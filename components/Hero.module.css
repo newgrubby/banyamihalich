@@ -69,22 +69,24 @@
 }
 
 .steamButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding-inline: 10px;
   color: var(--c-bronze-2);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
-  opacity: 0.78;
-  transition: color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
 }
 
 .steamButton:hover,
 .steamButton:focus-visible {
   color: var(--c-cream);
-  opacity: 1;
   transform: translateY(-2px);
+}
+
+.steamButton[data-active='true'] {
+  color: #fbeedc;
+  border-color: rgba(226, 160, 100, 0.82);
+  background: rgba(126, 69, 33, 0.82);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 216, 172, 0.18),
+    0 0 28px rgba(226, 136, 74, 0.28);
 }
 
 .status {

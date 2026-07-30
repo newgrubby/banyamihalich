@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { contacts, cta, hero } from '@/lib/content';
@@ -16,9 +16,17 @@ export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const sourceRef = useRef<HTMLSpanElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
+  const steamTimerRef = useRef<number | null>(null);
+  const [steamActive, setSteamActive] = useState(false);
   const now = useBanyaDay();
   const addSteam = () => {
     window.dispatchEvent(new CustomEvent('banya-steam-burst'));
+    setSteamActive(true);
+    if (steamTimerRef.current !== null) window.clearTimeout(steamTimerRef.current);
+    steamTimerRef.current = window.setTimeout(() => {
+      setSteamActive(false);
+      steamTimerRef.current = null;
+    }, 3750);
   };
 
   useEffect(() => {
@@ -59,6 +67,13 @@ export default function Hero() {
     return () => ctx.revert();
   }, []);
 
+  useEffect(
+    () => () => {
+      if (steamTimerRef.current !== null) window.clearTimeout(steamTimerRef.current);
+    },
+    [],
+  );
+
   return (
     <section className={styles.hero} ref={sectionRef} id="top" aria-labelledby="hero-title">
       <HeroMedia sourceRef={sourceRef} />
@@ -93,9 +108,15 @@ export default function Hero() {
               <PhoneIcon />
               {cta.call}
             </a>
-            <button type="button" className={styles.steamButton} onClick={addSteam}>
+            <button
+              type="button"
+              className={`btn btn--ghost ${styles.steamButton}`}
+              data-active={steamActive || undefined}
+              onClick={addSteam}
+              aria-live="polite"
+            >
               <span aria-hidden="true">♨</span>
-              Поддать пару
+              {steamActive ? 'Пар пошёл!' : 'Поддать пару'}
             </button>
           </div>
 
