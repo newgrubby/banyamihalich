@@ -2,6 +2,7 @@ import About from '@/components/About';
 import BanyaCursor from '@/components/BanyaCursor';
 import Contacts from '@/components/Contacts';
 import Footer from '@/components/Footer';
+import Gallery from '@/components/Gallery';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import InfoBar from '@/components/InfoBar';
@@ -26,6 +27,7 @@ export default function HomePage() {
         <InfoBar />
         <Schedule />
         <Services />
+        <Gallery />
         <About />
         <Prices />
         <Contacts />
