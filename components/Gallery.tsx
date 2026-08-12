@@ -19,6 +19,24 @@ const photos = [
     title: 'Настоящая парная',
     text: 'Деревянный полок, живой жар и атмосфера настоящей русской бани.',
   },
+  {
+    src: '/photos/atmosphere-guests.webp',
+    alt: 'Гостьи в банных халатах и шапках отдыхают с чаем и вениками',
+    title: 'Отдых в компании',
+    text: 'После парной — горячий чай, веник и время для тёплого общения.',
+  },
+  {
+    src: '/photos/atmosphere-buffet.webp',
+    alt: 'Бар-буфет общественной бани с напитками, чаем и закусками',
+    title: 'Бар-буфет',
+    text: 'Напитки, травяные чаи и закуски — всё необходимое для отдыха без спешки.',
+  },
+  {
+    src: '/photos/atmosphere-table-tennis.webp',
+    alt: 'Зал отдыха с деревянными столами, настольным теннисом и народными росписями',
+    title: 'Настольный теннис',
+    text: 'Можно сыграть партию между заходами в парную.',
+  },
 ] as const;
 
 export default function Gallery() {
@@ -38,15 +56,15 @@ export default function Gallery() {
         </header>
 
         <ul className={styles.grid}>
-          {photos.map((photo, index) => (
-            <li className={`${styles.card} ${index === 0 ? styles.featured : ''}`} key={photo.src} data-reveal>
+          {photos.map((photo) => (
+            <li className={styles.card} key={photo.src} data-reveal>
               <figure className={styles.figure}>
                 <img
                   className={styles.image}
                   src={photo.src}
                   alt={photo.alt}
                   width={1500}
-                  height={index === 2 ? 1125 : index === 1 ? 844 : 998}
+                  height={1000}
                   loading="lazy"
                   decoding="async"
                 />
