@@ -1,21 +1,46 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Playfair_Display } from 'next/font/google';
+import localFont from 'next/font/local';
 import { contacts, schedule, seo, site } from '@/lib/content';
 import './globals.css';
 
-const playfair = Playfair_Display({
-  subsets: ['cyrillic', 'latin'],
-  weight: ['400', '500', '600'],
-  style: ['normal', 'italic'],
+/*
+ * Шрифты лежат в репозитории (app/fonts) и раздаются с нашего домена:
+ * сборка не ходит в Google Fonts, в рантайме запросов к fonts.gstatic.com нет.
+ * Файлы — официальные переменные шрифты Google Fonts (Playfair Display 1.203,
+ * Inter 4.001), обрезанные по тем же диапазонам символов, что отдавал Google
+ * (latin, latin-ext, vietnamese, cyrillic; у Inter дополнительно cyrillic-ext,
+ * greek, greek-ext). Начертания и метрики не изменились.
+ */
+
+const playfair = localFont({
+  src: [
+    {
+      path: './fonts/PlayfairDisplay-Variable.woff2',
+      style: 'normal',
+      weight: '400 600',
+    },
+    {
+      path: './fonts/PlayfairDisplay-Italic-Variable.woff2',
+      style: 'italic',
+      weight: '400 600',
+    },
+  ],
   display: 'swap',
   variable: '--font-playfair',
+  adjustFontFallback: 'Times New Roman',
 });
 
-const inter = Inter({
-  subsets: ['cyrillic', 'latin'],
-  weight: ['400', '500'],
+const inter = localFont({
+  src: [
+    {
+      path: './fonts/Inter-Variable.woff2',
+      style: 'normal',
+      weight: '400 500',
+    },
+  ],
   display: 'swap',
   variable: '--font-inter',
+  adjustFontFallback: 'Arial',
 });
 
 export const viewport: Viewport = {

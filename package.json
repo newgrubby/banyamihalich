@@ -2,6 +2,9 @@
   "name": "banya-u-mihalycha",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=20.9.0 <25"
+  },
   "description": "Сайт общественной бани «У Михалыча», Павловский Посад",
   "scripts": {
     "dev": "next dev",

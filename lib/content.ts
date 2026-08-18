@@ -3,12 +3,19 @@
  * Меняйте текст, цены и расписание здесь — вся вёрстка подхватит автоматически.
  */
 
+/**
+ * Канонический адрес сайта. По умолчанию — рабочий домен; на превью-стендах
+ * его можно переопределить переменной NEXT_PUBLIC_SITE_URL (см. .env.example),
+ * чтобы canonical, Open Graph, robots.txt и sitemap.xml указывали на нужный хост.
+ */
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://banya-mihalycha.ru').replace(/\/+$/, '');
+
 export const site = {
   name: 'Баня «У Михалыча»',
   shortName: 'У Михалыча',
   legalName: 'Общественная баня «У Михалыча»',
   tagline: 'общественная баня',
-  url: 'https://banya-mihalycha.ru',
+  url: siteUrl,
   locale: 'ru_RU',
   timeZone: 'Europe/Moscow',
 } as const;
