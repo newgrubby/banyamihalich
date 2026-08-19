@@ -10,3 +10,8 @@ npm-debug.log*
 .env*.local
 next-env.d.ts
 tsconfig.tsbuildinfo
+
+# Готовый пакет статики для хостинга: полностью воспроизводится командой
+# NEXT_PUBLIC_SITE_URL=<домен> npm run build, поэтому в репозитории не хранится
+banya-timeweb-production/
+banya-timeweb-production.zip

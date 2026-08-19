@@ -1,32 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  /*
+   * Статический экспорт: `next build` кладёт готовый сайт в out/.
+   * Каталог загружается в public_html обычного хостинга — Node.js
+   * на сервере не нужен.
+   */
+  output: 'export',
   reactStrictMode: true,
   poweredByHeader: false,
-  compress: true,
   images: {
     formats: ['image/avif', 'image/webp'],
   },
-  async headers() {
-    return [
-      {
-        source: '/art/:path*',
-        headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
-        ],
-      },
-      {
-        // Имена без хеша: если медиа первого экрана заменят, кэш должен
-        // обновиться в разумный срок, поэтому не immutable
-        source: '/:file(hero-loop.mp4|hero-poster.avif|hero-poster.webp|hero-poster.png)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=604800, stale-while-revalidate=86400',
-          },
-        ],
-      },
-    ];
-  },
+  /*
+   * Заголовки Cache-Control раздаёт Apache: при статическом экспорте
+   * next.config.headers() не применяется, потому что отдачей файлов
+   * занимается веб-сервер, а не Next.js. Правила — в public/.htaccess,
+   * оттуда они попадают в out/.htaccess.
+   */
 };
 
 export default nextConfig;

@@ -1,0 +1,158 @@
+# ============================================================================
+#  Баня «У Михалыча» — статический сайт для виртуального хостинга Timeweb
+#  Файл кладётся в public_html вместе с остальным содержимым архива.
+#  Node.js на сервере не нужен: Apache отдаёт готовые файлы.
+# ============================================================================
+
+Options -Indexes
+DirectoryIndex index.html
+
+# Сам конфиг наружу не отдаём. В большинстве сборок Apache это уже
+# запрещено глобально, но лишняя страховка ничего не стоит.
+<FilesMatch "^\.ht">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # --------------------------------------------------------------------------
+  # 1. Принудительный HTTPS
+  #    Включать ТОЛЬКО после того, как для домена выпущен SSL-сертификат,
+  #    иначе сайт уйдёт в бесконечный редирект.
+  #    Условия учитывают балансировщик Timeweb (X-Forwarded-Proto).
+  # --------------------------------------------------------------------------
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteCond %{HTTP:X-Forwarded-SSL} !on
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # --------------------------------------------------------------------------
+  # 2. Канонический адрес: www → без www
+  #    ПО УМОЛЧАНИЮ ВЫКЛЮЧЕНО. Включайте, только когда точно известно,
+  #    какой адрес основной, и оба варианта привязаны к хостингу.
+  #    Правило не содержит домена — работает с любым.
+  #
+  #    Убрать «#» с двух строк ниже, чтобы основным стал адрес без www:
+  # RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  # RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+  #
+  #    Либо, если основным должен быть адрес С www:
+  # RewriteCond %{HTTP_HOST} !^www\. [NC]
+  # RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  # --------------------------------------------------------------------------
+
+  # --------------------------------------------------------------------------
+  # 3. Отдача статики.
+  #    Сайт одностраничный и полностью статический: существующие файлы и
+  #    каталоги отдаются как есть, ничего никуда не переписывается.
+  #    robots.txt, sitemap.xml, /_next/*, изображения, видео и шрифты
+  #    попадают под это условие и остаются доступными напрямую.
+  # --------------------------------------------------------------------------
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Адрес без расширения → соответствующий .html (на будущее, если появятся
+  # новые страницы). Для текущего одностраничника правило простаивает.
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.+)$ $1.html [L]
+</IfModule>
+
+# Страница 404 из экспорта Next.js
+ErrorDocument 404 /404.html
+
+# ============================================================================
+#  MIME-типы: часть современных форматов старые сборки Apache не знают
+# ============================================================================
+<IfModule mod_mime.c>
+  AddType text/html                     .html
+  AddType text/css                      .css
+  AddType application/javascript        .js
+  AddType application/json              .json
+  AddType application/xml               .xml
+  AddType text/plain                    .txt
+  AddType image/svg+xml                 .svg
+  AddType image/webp                    .webp
+  AddType image/avif                    .avif
+  AddType image/png                     .png
+  AddType image/jpeg                    .jpg .jpeg
+  AddType image/x-icon                  .ico
+  AddType video/mp4                     .mp4
+  AddType font/woff2                    .woff2
+  AddType text/cache-manifest           .appcache
+
+  AddCharset UTF-8 .html .css .js .json .xml .txt .svg
+</IfModule>
+
+# ============================================================================
+#  Сжатие. Только текстовые форматы: woff2, mp4, avif, webp, png, jpg
+#  уже сжаты, повторное сжатие бесполезно и лишь греет процессор.
+# ============================================================================
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css text/xml
+  AddOutputFilterByType BROTLI_COMPRESS application/javascript application/json
+  AddOutputFilterByType BROTLI_COMPRESS application/xml application/rss+xml
+  AddOutputFilterByType BROTLI_COMPRESS image/svg+xml
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE application/xml application/rss+xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ============================================================================
+#  Кеширование
+#  Повторяет заголовки, которые раньше выдавал next.config.mjs → headers().
+# ============================================================================
+<IfModule mod_headers.c>
+  # Сборка Next.js: имена файлов содержат хеш — можно кешировать навсегда
+  <FilesMatch "\.(js|css|woff2)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # Медиа первого экрана: имена без хеша, поэтому не immutable —
+  # при замене файла кеш обновится в течение недели
+  <FilesMatch "^(hero-loop\.mp4|hero-poster\.(avif|webp|png)|og\.jpg)$">
+    Header set Cache-Control "public, max-age=604800, stale-while-revalidate=86400"
+  </FilesMatch>
+
+  # HTML всегда перепроверяется, иначе клиент увидит старую версию сайта
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+
+  # robots.txt и sitemap.xml обновляются редко, но кешировать надолго нельзя
+  <FilesMatch "^(robots\.txt|sitemap\.xml)$">
+    Header set Cache-Control "public, max-age=3600"
+  </FilesMatch>
+
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/avif                "access plus 7 days"
+  ExpiresByType image/webp                "access plus 7 days"
+  ExpiresByType image/png                 "access plus 7 days"
+  ExpiresByType image/jpeg                "access plus 7 days"
+  ExpiresByType image/svg+xml             "access plus 30 days"
+  ExpiresByType video/mp4                 "access plus 7 days"
+  ExpiresByType font/woff2                "access plus 1 year"
+</IfModule>
+
+# Каталог сборки Next.js — содержимое неизменяемо, имена с хешами
+<IfModule mod_headers.c>
+  <FilesMatch "\.(map)$">
+    Header set Cache-Control "public, max-age=86400"
+  </FilesMatch>
+</IfModule>

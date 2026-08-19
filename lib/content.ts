@@ -7,8 +7,16 @@
  * Канонический адрес сайта. По умолчанию — рабочий домен; на превью-стендах
  * его можно переопределить переменной NEXT_PUBLIC_SITE_URL (см. .env.example),
  * чтобы canonical, Open Graph, robots.txt и sitemap.xml указывали на нужный хост.
+ *
+ * Адрес приводится к origin в ASCII-форме. Для кириллических доменов (.рф)
+ * это punycode: Next.js всё равно нормализует так canonical и Open Graph,
+ * и без этого sitemap, robots и JSON-LD писали бы тот же адрес кириллицей —
+ * поисковики видели бы два разных URL одной страницы. Заодно отсекается
+ * лишний слэш в конце.
  */
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://banya-mihalycha.ru').replace(/\/+$/, '');
+const siteUrl = new URL(
+  process.env.NEXT_PUBLIC_SITE_URL || 'https://banya-mihalycha.ru',
+).origin;
 
 export const site = {
   name: 'Баня «У Михалыча»',
