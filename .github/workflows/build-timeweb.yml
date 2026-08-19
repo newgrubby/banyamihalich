@@ -1,6 +1,7 @@
-# Собирает готовый к загрузке пакет статики для обычного хостинга Timeweb.
-# Итог каждого запуска: banya-timeweb-production.zip — в артефактах запуска
-# и в постоянном релизе timeweb-latest, откуда его можно скачать одной ссылкой.
+# Собирает статику сайта и публикует её двумя путями:
+#   1. выкладывает по FTP на виртуальный хостинг Timeweb — сайт обновляется сам;
+#   2. кладёт banya-timeweb-production.zip в релиз timeweb-latest —
+#      на случай ручной загрузки и как резервную копию сборки.
 name: Timeweb production package
 
 on:
@@ -12,10 +13,10 @@ on:
 permissions:
   contents: write
 
-# Параллельные сборки одного и того же релиза мешали бы друг другу
+# Два деплоя одновременно затирали бы друг друга
 concurrency:
-  group: timeweb-package
-  cancel-in-progress: true
+  group: timeweb-deploy
+  cancel-in-progress: false
 
 env:
   # Боевой домен. Вшивается в canonical, Open Graph, JSON-LD, sitemap и robots
@@ -25,10 +26,13 @@ env:
   EXPECTED_HOST: xn--80aaab0bawfh5dya0a5c.xn--p1ai
   PACKAGE: banya-timeweb-production.zip
   RELEASE_TAG: timeweb-latest
+  # Каталог публикации на хостинге. Если его не окажется, шаг «Detect FTP
+  # directory» подберёт фактический и подставит его вместо этого значения.
+  TARGET_DIR: /public_html/
 
 jobs:
   build:
-    name: Build and publish
+    name: Build and deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -49,9 +53,20 @@ jobs:
 
       - name: Check export
         run: |
-          test -f out/index.html || { echo '::error::out/index.html не создан'; exit 1; }
-          test -f out/.htaccess  || { echo '::error::out/.htaccess не создан'; exit 1; }
-          echo "out/index.html и out/.htaccess на месте"
+          fail=0
+          for f in index.html .htaccess robots.txt sitemap.xml 404.html; do
+            if [ -f "out/$f" ]; then
+              echo "ok   out/$f"
+            else
+              echo "::error::out/$f не создан"
+              fail=1
+            fi
+          done
+          if [ ! -d out/_next ]; then
+            echo '::error::каталог out/_next не создан'
+            fail=1
+          fi
+          exit $fail
 
       - name: Check domain in SEO files
         run: |
@@ -68,15 +83,22 @@ jobs:
 
       - name: Drop media sources
         # hero.mp4 и hero.png лежат в public/ только как исходники для
-        # scripts/prepare-hero-media.mjs. Сайт на них не ссылается —
-        # в пакет для хостинга они не нужны.
+        # scripts/prepare-hero-media.mjs. Сайт на них не ссылается, поэтому
+        # ни на хостинг, ни в архив они не попадают. Если однажды на них
+        # появится ссылка — шаг остановит сборку, а не молча их удалит.
         run: |
+          for f in hero.mp4 hero.png; do
+            if grep -rq "/$f" out --include='*.html' --include='*.js' --include='*.css' 2>/dev/null; then
+              echo "::error::$f используется сайтом — удалять нельзя"
+              exit 1
+            fi
+          done
           rm -f out/hero.mp4 out/hero.png
           echo "исходники media удалены из пакета"
 
       - name: Create ZIP
-        # Архивируется содержимое out/, а не сам каталог: точки монтирования
-        # внутри архива быть не должно, файлы обязаны лежать в корне.
+        # Архивируется содержимое out/, а не сам каталог: файлы обязаны
+        # лежать в корне архива, без вложенной папки.
         run: |
           cd out
           zip -r -X "../$PACKAGE" . >/dev/null
@@ -84,56 +106,7 @@ jobs:
           ls -lh "$PACKAGE"
 
       - name: Verify ZIP
-        run: |
-          python3 - <<'PY'
-          import os, sys, zipfile
-
-          package = os.environ['PACKAGE']
-          names = zipfile.ZipFile(package).namelist()
-          errors = []
-
-          # 1. Никакой вложенной папки в корне архива
-          for bad in ('out/', 'banya-timeweb-production/', './'):
-              nested = [n for n in names if n.startswith(bad)]
-              if nested:
-                  errors.append(f'в архиве есть вложенный префикс {bad!r}: {nested[:3]}')
-
-          # 2. Обязательные файлы — непосредственно в корне
-          for required in ('index.html', '.htaccess', '404.html',
-                           'robots.txt', 'sitemap.xml'):
-              if required not in names:
-                  errors.append(f'в корне архива нет {required}')
-
-          # 3. Каталог сборки Next.js на месте
-          if not any(n.startswith('_next/') for n in names):
-              errors.append('в архиве нет каталога _next/')
-
-          # 4. Исходников быть не должно
-          for src in ('app/', 'components/', 'lib/', 'node_modules/',
-                      '.next/', 'scripts/', 'reference/'):
-              if any(n.startswith(src) for n in names):
-                  errors.append(f'в архиве найдены исходники {src}')
-          for src in ('package.json', 'package-lock.json', 'tsconfig.json',
-                      'next.config.mjs', '.env', '.env.example'):
-              if src in names:
-                  errors.append(f'в архиве найден исходный файл {src}')
-
-          # 5. Исходники media не попали
-          for src in ('hero.mp4', 'hero.png'):
-              if src in names:
-                  errors.append(f'в архиве остался исходник {src}')
-
-          if errors:
-              for e in errors:
-                  print(f'::error::{e}')
-              sys.exit(1)
-
-          print(f'файлов в архиве: {len(names)}')
-          print('в корне архива:')
-          for r in sorted({n.split("/")[0] for n in names}):
-              print('   ', r)
-          print('проверки пройдены')
-          PY
+        run: python3 .github/scripts/verify_zip.py
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -147,28 +120,49 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Релиз перевыпускается, чтобы тег всегда указывал на свежую сборку,
+          # Релиз перевыпускается, чтобы тег указывал на свежую сборку,
           # а ссылка на скачивание оставалась неизменной.
           gh release delete "$RELEASE_TAG" --yes --cleanup-tag 2>/dev/null || true
-
           gh release create "$RELEASE_TAG" "$PACKAGE" \
             --title "Timeweb Production" \
             --target "$GITHUB_SHA" \
-            --notes "Готовый статический сайт для обычного хостинга Timeweb.
-
-          Домен сборки: https://баниумихалыча.рф
-
-          Как публиковать:
-          1. Скачать \`$PACKAGE\`.
-          2. Распаковать содержимое **непосредственно** в \`public_html\`
-             так, чтобы \`index.html\` лежал в корне \`public_html\`.
-          3. Готово — Node.js и npm на хостинге не нужны.
-
-          Скрытый файл \`.htaccess\` тоже нужно загрузить: в нём редиректы,
-          MIME-типы, сжатие и кеширование.
-
-          Собрано из коммита $GITHUB_SHA."
-
+            --notes-file .github/release-notes.md
           echo "релиз опубликован:"
           gh release view "$RELEASE_TAG" --json tagName,name,assets \
             --jq '{tag: .tagName, name: .name, assets: [.assets[].name]}'
+
+      - name: Detect FTP directory
+        # Проверяет, что каталог публикации на хостинге существует. Если нет —
+        # ищет фактический: у Timeweb сайт нередко лежит в <домен>/public_html.
+        # Пароль читается из окружения и нигде не печатается.
+        id: ftp
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: python3 .github/scripts/detect_ftp_dir.py
+
+      - name: Deploy to Timeweb over FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
+          # Выкладывается только готовая статика: исходников, node_modules
+          # и .git в этом каталоге нет по определению.
+          local-dir: ./out/
+          server-dir: ${{ steps.ftp.outputs.server_dir }}
+          # Ничего лишнего с сервера не удаляем: действие синхронизирует
+          # только то, что само туда клало.
+          dangerous-clean-slate: false
+          log-level: standard
+
+      - name: Deploy summary
+        run: |
+          {
+            echo "- выложено из \`./out/\` в \`${{ steps.ftp.outputs.server_dir }}\`"
+            echo "- коммит: \`$GITHUB_SHA\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "деплой завершён: ${{ steps.ftp.outputs.server_dir }}"

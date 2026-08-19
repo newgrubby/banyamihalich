@@ -15,3 +15,7 @@ tsconfig.tsbuildinfo
 # NEXT_PUBLIC_SITE_URL=<домен> npm run build, поэтому в репозитории не хранится
 banya-timeweb-production/
 banya-timeweb-production.zip
+
+# Кеш Python от локального прогона скриптов сборки
+__pycache__/
+*.pyc
