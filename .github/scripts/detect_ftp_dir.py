@@ -57,32 +57,50 @@ user = raw_user.strip().strip('"').strip("'")
 print(f'::add-mask::{host}')
 print(f'::add-mask::{user}')
 
-changes = []
-if host != raw_host:
-    changes.append('FTP_SERVER')
-if user != raw_user:
-    changes.append('FTP_USERNAME')
-if changes:
-    print(f'значения секретов приведены к рабочему виду: {", ".join(changes)}')
-    print(f'  FTP_SERVER: было символов {len(raw_host)}, стало {len(host)}; '
-          f'схема: {"://" in raw_host}, порт: {raw_host.strip().count(":") > 0}, '
-          f'слэш: {"/" in raw_host.strip()}, пробелы: {raw_host != raw_host.strip()}')
 
-if not host:
-    print('::error::в секрете FTP_SERVER не осталось имени хоста после очистки')
-    sys.exit(1)
+def fingerprint(value: str) -> str:
+    """Описание значения без самого значения — чтобы не светить секрет."""
+    letters = sum(c.isalpha() for c in value)
+    digits = sum(c.isdigit() for c in value)
+    other = len(value) - letters - digits
+    return (f'символов {len(value)}, букв {letters}, цифр {digits}, '
+            f'прочих {other}, точек {value.count(".")}, дефисов {value.count("-")}')
 
-try:
-    address = socket.gethostbyname(host)
-except OSError as error:
+
+def resolve(candidate: str):
+    try:
+        return socket.gethostbyname(candidate)
+    except OSError:
+        return None
+
+
+address = resolve(host) if host else None
+
+if address is None:
+    # Секрет непригоден. Разбираем, что в нём лежит, не раскрывая значения.
+    print('::warning::значение секрета FTP_SERVER не похоже на имя хоста')
+    print(f'::warning::  {fingerprint(host)}')
+    print(f'::warning::  совпадает с FTP_USERNAME: {host == user}')
+    print(f'::warning::  совпадает с FTP_PASSWORD: {host == password.strip()}')
+    print('::warning::  ожидается вид vh470.timeweb.ru — '
+          'без ftp://, без :21, без слэша и пробелов')
+
+    fallback = clean_host(os.environ.get('FTP_HOST_FALLBACK', ''))
+    if fallback:
+        address = resolve(fallback)
+        if address is not None:
+            print(f'::warning::использую запасной хост из env.FTP_HOST_FALLBACK '
+                  f'({fallback}). Деплой пройдёт, но секрет FTP_SERVER '
+                  f'всё равно нужно поправить.')
+            host = fallback
+
+if address is None:
     print('::error::имя FTP-сервера не разрешается в адрес')
-    print(f'::error::после очистки в значении {len(host)} символов, '
-          f'точек: {host.count(".")}, ошибка: {error}')
+    print(f'::error::значение из секрета: {fingerprint(host)}')
     print('::error::в секрете FTP_SERVER должно быть только имя хоста, '
           'например vh470.timeweb.ru — без ftp://, без :21 и без пробелов')
     sys.exit(1)
 
-print(f'::add-mask::{address}')
 print('имя FTP-сервера разрешается в адрес — соединяемся')
 
 ftp = ftplib.FTP()
