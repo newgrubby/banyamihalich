@@ -132,9 +132,10 @@ jobs:
             --jq '{tag: .tagName, name: .name, assets: [.assets[].name]}'
 
       - name: Detect FTP directory
-        # Проверяет, что каталог публикации на хостинге существует. Если нет —
-        # ищет фактический: у Timeweb сайт нередко лежит в <домен>/public_html.
-        # Пароль читается из окружения и нигде не печатается.
+        # Чистит значения секретов от лишнего (ftp://, порт, пробелы) и
+        # проверяет, что каталог публикации существует. Если его нет — ищет
+        # фактический: у Timeweb сайт нередко лежит в <домен>/public_html.
+        # Секреты нигде не печатаются.
         id: ftp
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
@@ -145,8 +146,10 @@ jobs:
       - name: Deploy to Timeweb over FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
+          # Хост и логин берутся из предыдущего шага: там они очищены
+          # от возможных ftp://, порта и пробелов. Пароль идёт из секрета как есть.
+          server: ${{ steps.ftp.outputs.server }}
+          username: ${{ steps.ftp.outputs.username }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
