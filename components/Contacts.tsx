@@ -19,7 +19,7 @@ export default function Contacts() {
             </span>
 
             <h2 className={styles.title} id="contacts-title">
-              Ждём вас в бане!
+              Иди ты в баню!
             </h2>
 
             <ul className={styles.list}>

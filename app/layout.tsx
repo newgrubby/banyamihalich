@@ -118,7 +118,7 @@ const jsonLd = {
   telephone: contacts.phoneRaw,
   priceRange: '600–800 ₽',
   currenciesAccepted: 'RUB',
-  paymentAccepted: 'Наличные, банковская карта',
+  paymentAccepted: 'Наличные',
   address: {
     '@type': 'PostalAddress',
     streetAddress: contacts.street,
